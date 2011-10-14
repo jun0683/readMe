@@ -21,12 +21,12 @@
 		D397EDC51448993F003FD1D9 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		D397EDC61448993F003FD1D9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D397EDC71448993F003FD1D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		D397EDCA1448993F003FD1D9 /* readMe-Info.plist */ = {isa = PBXFileReference; path = "readMe-Info.plist"; sourceTree = "<group>"; };
+		D397EDCA1448993F003FD1D9 /* readMe-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "readMe-Info.plist"; sourceTree = "<group>"; };
 		D397EDCC1448993F003FD1D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D397EDCE1448993F003FD1D9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D397EDD01448993F003FD1D9 /* readMe-Prefix.pch */ = {isa = PBXFileReference; path = "readMe-Prefix.pch"; sourceTree = "<group>"; };
+		D397EDD01448993F003FD1D9 /* readMe-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "readMe-Prefix.pch"; sourceTree = "<group>"; };
 		D397EDD21448993F003FD1D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		D397EDD41448993F003FD1D9 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		D397EDD41448993F003FD1D9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D397EDD51448993F003FD1D9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		D397EDD81448993F003FD1D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */

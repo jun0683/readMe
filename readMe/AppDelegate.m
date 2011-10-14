@@ -15,6 +15,11 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	// Insert code here to initialize your application
+	NSSpeechSynthesizer *synth = [[NSSpeechSynthesizer alloc] initWithVoice:@"com.apple.speech.synthesis.voice.Alex"];
+	[synth startSpeakingString:@"Hello world!"];
+	
+	//http://stackoverflow.com/questions/837582/mac-osx-speech-to-text-api-how-to
+	
 }
 
 @end
