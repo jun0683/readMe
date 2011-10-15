@@ -13,6 +13,10 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate,NSSpeechSynthesizerDelegate>
 
 @property (assign) NSUInteger speackLocation;
+@property (assign) NSUInteger speackLength;
+@property (assign) NSUInteger speackOffset;
+
+@property (assign) BOOL first;
 @property (assign) IBOutlet DraggingWindow *window;
 @property (unsafe_unretained) IBOutlet NSTextView *textView;
 @property (nonatomic,retain) NSSpeechSynthesizer *synth;

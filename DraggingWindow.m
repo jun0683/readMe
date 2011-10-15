@@ -82,11 +82,12 @@
 
 	NSArray *draggedFilenames = [[sender draggingPasteboard] propertyListForType:NSFilenamesPboardType];
 	NSString *file = [draggedFilenames objectAtIndex:0];
+
 	[[NSUserDefaults standardUserDefaults] setValue:file forKey:@"lastFile"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	[self setTextViewString:file];
-	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"newFile" object:nil];
 	
 }
 @end
