@@ -17,9 +17,17 @@
 @property (assign) NSUInteger speackOffset;
 
 @property (assign) BOOL first;
+
+@property (nonatomic,retain) NSSpeechSynthesizer *synth;
+
 @property (assign) IBOutlet DraggingWindow *window;
 @property (unsafe_unretained) IBOutlet NSTextView *textView;
-@property (nonatomic,retain) NSSpeechSynthesizer *synth;
+
+
+- (void)loadLastSpeackLocation;
+- (void)saveLastSpeackLocation;
+- (void)scrollTextView:(NSRange)range;
+
 - (IBAction)buttonDown:(id)sender;
 
 @end

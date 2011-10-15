@@ -19,10 +19,64 @@
 @synthesize speackOffset = _speackOffset;
 @synthesize first;
 
+#pragma mark - life cycle
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+	[self loadLastSpeackLocation];
+	[_window lastFileLoad];
+	[_window registerForDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
+	
+	NSRect scrollviewframe = [[_textView superview] frame];
+	[_textView setFrame:scrollviewframe];
+	
+	[self scrollTextView:NSMakeRange(_speackLocation, 0)];
+	
+	
+	
+	
+	self.synth = [[NSSpeechSynthesizer alloc] initWithVoice:[NSSpeechSynthesizer defaultVoice]];
+	[_synth setDelegate:self];
+	
+	first = YES;
+	
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newFile) name:@"newFile" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textSelected:) name:NSTextViewDidChangeSelectionNotification object:nil];
+}
+
+
+- (void)applicationWillTerminate:(NSNotification *)notification
+{
+	[self saveLastSpeackLocation];
+}
+
+#pragma mark - noti
+
+- (void)newFile
+{
+	first = YES;
+	_speackOffset = _speackLocation = 0;
+}
+
+- (void)textSelected:(NSNotification*)noti
+{
+	if ([_synth isSpeaking])
+	{
+		[_synth stopSpeakingAtBoundary:NSSpeechWordBoundary];
+	}
+	NSLog(@"textSelected %lu",[_textView selectedRange].location);
+	_speackOffset = _speackLocation = [_textView selectedRange].location;
+	first = YES;
+	
+}
+
+#pragma mark - load/save
 
 - (void)loadLastSpeackLocation
 {
 	_speackOffset = _speackLocation = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastspeackLocation"] intValue];
+	
 }
 
 - (void)saveLastSpeackLocation
@@ -31,38 +85,8 @@
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void)newFile
-{
-	first = YES;
-	_speackOffset = _speackLocation = 0;
-}
+#pragma mark - button Event
 
-
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-	[_window lastFileLoad];
-	[_window registerForDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
-	
-	NSRect scrollviewframe = [[_textView superview] frame];
-	[_textView setFrame:scrollviewframe];
-	
-	[self loadLastSpeackLocation];
-	
-	
-	self.synth = [[NSSpeechSynthesizer alloc] initWithVoice:[NSSpeechSynthesizer defaultVoice]];
-	[_synth setDelegate:self];
-		
-	first = YES;
-	
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newFile) name:@"newFile" object:nil];
-}
-
-
-- (void)applicationWillTerminate:(NSNotification *)notification
-{
-	[self saveLastSpeackLocation];
-}
 
 - (IBAction)buttonDown:(id)sender {
 
@@ -91,12 +115,21 @@
 {
 	_speackLocation = characterRange.location;
 	_speackLength = characterRange.length;
-	NSRect insertionRect=[[_textView layoutManager] boundingRectForGlyphRange:NSMakeRange(characterRange.location+_speackOffset, characterRange.length) 
+	
+	[self scrollTextView:NSMakeRange(characterRange.location+_speackOffset, characterRange.length)];
+	
+	NSLog(@"willSpeakWord %lu",characterRange.location+_speackOffset);
+	NSLog(@"characterRange.location %lu",characterRange.location);
+}
+
+#pragma mark - scroll
+
+- (void)scrollTextView:(NSRange)range
+{
+	NSRect insertionRect=[[_textView layoutManager] boundingRectForGlyphRange:range 
 															  inTextContainer:[_textView textContainer]];
 	[_textView scrollPoint:insertionRect.origin];
 }
-
-
 
 
 
