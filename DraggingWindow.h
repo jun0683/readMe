@@ -10,5 +10,5 @@
 
 @interface DraggingWindow : NSWindow
 @property (unsafe_unretained) IBOutlet NSTextView *textView;
-
+- (void)lastFileLoad;
 @end

@@ -16,18 +16,24 @@
 @synthesize synth = _synth;
 @synthesize speackLocation = _speackLocation;
 
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	// Insert code here to initialize your application
-	self.synth = [[NSSpeechSynthesizer alloc] initWithVoice:[NSSpeechSynthesizer defaultVoice]];
-	[_synth setDelegate:self];
-	
+	[_window lastFileLoad];
 	[_window registerForDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
 	
 	NSRect scrollviewframe = [[_textView superview] frame];
 	[_textView setFrame:scrollviewframe];
 	
 	_speackLocation = 0;
+	
+	self.synth = [[NSSpeechSynthesizer alloc] initWithVoice:[NSSpeechSynthesizer defaultVoice]];
+	[_synth setDelegate:self];
+}
+
+- (void)applicationWillTerminate:(NSNotification *)notification
+{
+	
 }
 
 - (IBAction)buttonDown:(id)sender {
@@ -50,32 +56,22 @@
 	
 }
 
-- (void)speechSynthesizer:(NSSpeechSynthesizer *)sender didFinishSpeaking:(BOOL)finishedSpeaking
-{
-	NSLog(@"didFinishSpeaking");
-}
+#pragma mark - NSSpeechSynthesizerDelegate
+
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender willSpeakWord:(NSRange)characterRange ofString:(NSString *)string
 {
-	
-	NSLog(@"willSpeakWord %@ %@",[string substringWithRange:characterRange],NSStringFromRange(characterRange));
+//	NSLog(@"willSpeakWord %@ %@",[string substringWithRange:characterRange],NSStringFromRange(characterRange));
 	_speackLocation = characterRange.location;
-	[_textView setSelectedRange:characterRange];
+//	[_textView setSelectedRange:characterRange];
+//	[_textView showFindIndicatorForRange:characterRange];
+	
+	NSRect insertionRect=[[_textView layoutManager] boundingRectForGlyphRange:characterRange inTextContainer:[_textView textContainer]];
+//	NSPoint scrollPoint=NSMakePoint(0,insertionRect.origin.y+insertionRect.size.height+50-[[NSScreen mainScreen] frame].size.height);
+//	NSLog(@"%@",NSStringFromPoint(insertionRect));
+	[_textView scrollPoint:insertionRect.origin];
 }
-- (void)speechSynthesizer:(NSSpeechSynthesizer *)sender willSpeakPhoneme:(short)phonemeOpcode
-{
-	NSLog(@"willSpeakPhoneme");
-}
-- (void)speechSynthesizer:(NSSpeechSynthesizer *)sender 
- didEncounterErrorAtIndex:(NSUInteger)characterIndex 
-				 ofString:(NSString *)string 
-				  message:(NSString *)message 
-{
-	NSLog(@"didEncounterErrorAtIndex");
-}
-- (void)speechSynthesizer:(NSSpeechSynthesizer *)sender didEncounterSyncMessage:(NSString *)message 
-{
-	NSLog(@"didEncounterSyncMessage");
-}
+
+
 
 
 

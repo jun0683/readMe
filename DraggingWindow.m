@@ -11,6 +11,25 @@
 @implementation DraggingWindow
 @synthesize textView;
 
+- (NSString*)loadFile:(NSString *)file
+{
+	return [NSString stringWithContentsOfFile:file encoding:NSUTF8StringEncoding error:nil];
+}
+
+- (void)setTextViewString:(NSString*)file
+{
+	textView.string = [self loadFile:file];
+}
+
+- (void)lastFileLoad
+{
+	NSString* file = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastFile"];
+	if ([file length]) {
+		[self setTextViewString:file];
+	}
+	NSLog(@"lastFileLoad");
+}
+
 - (BOOL)isOneFile:(id)info
 {
 	NSArray *draggedFilenames = [[info draggingPasteboard] propertyListForType:NSFilenamesPboardType];
@@ -57,12 +76,17 @@
 	return [self isPossible:sender];
 }
 
-- (void)concludeDragOperation:(id <NSDraggingInfo>)sender{
-    NSArray *draggedFilenames = [[sender draggingPasteboard] propertyListForType:NSFilenamesPboardType];
-    NSString *textDataFile = [NSString stringWithContentsOfFile:[draggedFilenames objectAtIndex:0] encoding:NSUTF8StringEncoding error:nil];
-	
-	textView.string = textDataFile;
-//    NSLog(@"%@", textDataFile);
-} 
 
+
+- (void)concludeDragOperation:(id <NSDraggingInfo>)sender{
+
+	NSArray *draggedFilenames = [[sender draggingPasteboard] propertyListForType:NSFilenamesPboardType];
+	NSString *file = [draggedFilenames objectAtIndex:0];
+	[[NSUserDefaults standardUserDefaults] setValue:file forKey:@"lastFile"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	[self setTextViewString:file];
+	
+	
+}
 @end
