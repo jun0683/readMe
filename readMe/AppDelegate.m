@@ -61,13 +61,12 @@
 
 - (void)textSelected:(NSNotification*)noti
 {
-	if ([_synth isSpeaking])
-	{
-		[_synth stopSpeakingAtBoundary:NSSpeechWordBoundary];
-	}
-	NSLog(@"textSelected %lu",[_textView selectedRange].location);
+	[self stop];
+	
 	_speackOffset = _speackLocation = [_textView selectedRange].location;
 	first = YES;
+	
+	[self read];
 	
 }
 
@@ -87,24 +86,33 @@
 
 #pragma mark - button Event
 
-
-- (IBAction)buttonDown:(id)sender {
-
-	if ([_synth isSpeaking]) {
-		[_synth pauseSpeakingAtBoundary:NSSpeechWordBoundary];
+- (void)read
+{
+	if (first) 
+	{
+		[_synth stopSpeaking];
+		[_synth startSpeakingString:[_textView.string substringFromIndex:_speackLocation]];
+		first = NO;
 	}
 	else
 	{
-		if (first) 
-		{
-			[_synth startSpeakingString:[_textView.string substringFromIndex:_speackLocation]];
-			first = NO;
-		}
-		else
-		{
-			[_synth continueSpeaking];
-		}
-			
+		[_synth continueSpeaking];
+	}
+}
+
+- (void)stop
+{
+	[_synth pauseSpeakingAtBoundary:NSSpeechWordBoundary];
+}
+
+- (IBAction)buttonToggle:(id)sender {
+
+	if ([_synth isSpeaking]) {
+		[self stop];
+	}
+	else
+	{
+		[self read];
 	}
 	
 }
@@ -117,9 +125,6 @@
 	_speackLength = characterRange.length;
 	
 	[self scrollTextView:NSMakeRange(characterRange.location+_speackOffset, characterRange.length)];
-	
-	NSLog(@"willSpeakWord %lu",characterRange.location+_speackOffset);
-	NSLog(@"characterRange.location %lu",characterRange.location);
 }
 
 #pragma mark - scroll

@@ -28,6 +28,9 @@
 - (void)saveLastSpeackLocation;
 - (void)scrollTextView:(NSRange)range;
 
-- (IBAction)buttonDown:(id)sender;
+- (void)read;
+- (void)stop;
+
+- (IBAction)buttonToggle:(id)sender;
 
 @end
