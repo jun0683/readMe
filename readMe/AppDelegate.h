@@ -8,8 +8,14 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@class DraggingWindow;
 
-@property (assign) IBOutlet NSWindow *window;
+@interface AppDelegate : NSObject <NSApplicationDelegate,NSSpeechSynthesizerDelegate>
+
+@property (assign) NSUInteger speackLocation;
+@property (assign) IBOutlet DraggingWindow *window;
+@property (unsafe_unretained) IBOutlet NSTextView *textView;
+@property (nonatomic,retain) NSSpeechSynthesizer *synth;
+- (IBAction)buttonDown:(id)sender;
 
 @end
